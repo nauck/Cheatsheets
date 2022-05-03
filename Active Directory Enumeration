@@ -1,0 +1,57 @@
+ACTIVE DIRECTORY
+
+Terms:
+Domain Controller (DC): Core of Active Directory, DC will also host DNS Server that is authoritative for given domain
+Domain: example.com
+OU: User objects, computer objects
+Users and computers arranged in OU like containers used to store objects
+Domain-joined means part of a domain
+
+Enumeration:
+Traditional way:
+// enumerates all local users accounts
+net user
+
+// enumerates all users in the entire domain
+net user /domain
+
+// list all groups in the domain
+net group /domain
+or
+net group "Domain Admins" /domain
+
+// query a domain user or list domain user details
+net user <username> /domain
+
+Modern way:
+// Use powershell
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+$PDC = ($domainObj.PdcRoleOwner).Name
+$SearchString = "LDAP://"
+$SearchString += $PDC + "/"
+$DistinguishedName = "DC=$($domainObj.Name.Replace('.', ',DC='))"
+$SearchString += $DistinguishedName
+$SearchString
+
+//Instantiate the directory searcher class with LDAP provider path
+$Searcher = New-Object System.Directory.Services.DirectorySearcher([ADSI]$SearchString)
+
+// search root - node where search starts
+$objDomain = New-Object System.DirectoryServices.DirectoryEntry
+
+// returns result from entire active directory
+$Searcher.SearchRoot = $objDomain
+
+// use filter to narrow down
+$Searcher.filter = "name=name_of_admin"
+$Searcher.FindAll()
+
+$Result = $Searcher.FindAll()
+Foreach($obj in $Result)
+{
+    Foreach($prop in $obj.Properties)
+    {
+         $prop
+    }
+    write-host "----------------------------"
+}
