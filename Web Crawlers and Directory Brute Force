@@ -6,5 +6,5 @@ wfuzz -c -z file,/usr/share/wordlists/wfuzz/Injections/SQL.txt -d "username=admi
 
 -c: color of output in terminal to make it readable
 -z: payload to use
--d: data to post to the server
+-d: data to post to the server obtained from burp
 -u: target url
