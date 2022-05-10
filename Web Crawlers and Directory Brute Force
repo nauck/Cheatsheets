@@ -1,0 +1,10 @@
+# wfuzz
+
+Using Burpsuite, intercept the parameters sent to server as http post request. ex "username=admin&password=pass123" 
+
+wfuzz -c -z file,/usr/share/wordlists/wfuzz/Injections/SQL.txt -d "username=admin&password=FUZZ" -u <TARGET_URL>
+
+-c: color of output in terminal to make it readable
+-z: payload to use
+-d: data to post to the server
+-u: target url
