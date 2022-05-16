@@ -1,0 +1,12 @@
+SQLi Union Attacks
+
+SQL Injection UNION Attack
+
+1. Determine the number of columns in the table
+    i.  'UNION select NULL, NULL etc.keep adding NULL until you get 200 response code.
+    ii. 'UNION select ORDER BY 1, 2 etc.
+2. Determine the datatype of the columns
+3. Find the database type
+
+SQLi Cheatsheet
+https://portswigger.net/web-security/sql-injection/cheat-sheet
