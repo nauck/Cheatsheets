@@ -52,9 +52,9 @@ KERBEROS AUTHENTICATION - based on the idea of ticketing system
 ∘ Service ticket is encrypted using password hash of SPN
 ∘ When user wants to access resource hosted by SPN, it sends service ticket request to domain controller
 ∘ When user receives the service ticket, it sends it to SPN which then decrypts the service ticket using its password hash
-∘ Flaw
+  Flaw
 ‣ when requesting service ticket from DC, no checks are performed on whether user has any permissions to access the service hosted by SPN.
-‣ If we know target SPN, we can request service ticket for it from DC. We can extract the ticket from from user's memory.
- 
+‣ If we know target SPN, we can request service ticket for it from DC. We can extract the ticket from from user's memory. Then we can abuse service ticket
+  to try and decrypt the password of the service.
 
 • LOW AND SLOW PASSWORD GUESSING
