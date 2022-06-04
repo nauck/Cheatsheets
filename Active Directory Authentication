@@ -1,0 +1,60 @@
+NTLM AUTHENTICATION - based on the idea of challenge and response
+‣ client calculates NTLM hash from users password
+‣ client sends username to server
+‣ server sends 'nonce' (challenge) to client
+‣ client encrypts 'nonce' with NTLM hash and sends to server
+‣ server forwards username, 'nonce' and response from client to Domain Controller
+‣ Domain Controller validates by encrypting the 'nonce' with NTLM hash and comparing it to the response from the server
+‣ If the two are equal, DC approves authentication and tells the server
+
+KERBEROS AUTHENTICATION - based on the idea of ticketing system
+‣ Step 1: client sends request to DC (KDC) - Authentication Server Request (AS_REQ) - contains timestamp encrypted using password hash
+‣ Step 2: DC looks up password hash and decrypts timestamp. If decryption is good and timestamp is not dupe, authentication is successful. 
+  DC replies to client with Authentication Server Reply (AS_REP) that contains 
+  • session key - encrypted using user's password hash and can be decrypted by client and reused
+  • TGT (ticket granting ticket) - contains info about user's group, domain, timestamp, IP and session key. In order to avoid tampering, 
+    TGT is encrypted by secret key known only to the KDC and cannot be decrypted by client. 
+    Once client gets session key and TGT, KDC considers client auth complete. TGT will be valid for 10 hours before renewal and does not 
+    require user to re-enter the password
+‣ Step 3: When user needs to access domain resource such as network share, exchange mailbox or any application with registered SPN, it 
+  must contact KDC. This time client sends Ticket Granting Service Request (TGS_REQ) packet that consists of
+    • Current user + timestamp (encrypted using the session key) + SPN of the resource + encrypted TGT
+‣ Step 4: Ticket granting service on KDC receives TGS_REQ and if SPN exists
+    TGT is decrypted using the secret key known to only to KDC
+    Session key is extracted from TGT and used to decrypt username and timestamp
+      ∘ TGT must have a valid timestamp
+      ∘ The username from the TGS_REQ has to match the username from the TGT
+      ∘ The client IP needs to coincide with TGT IP
+• Step 5: If the veification succeeds, the ticket granting service responds to the client with Ticket Granting Server Reply (TGS_REP). It contains
+  ∘ SPN + session key to be used between client and SPN + Service ticket containing the username and group membership along with the new session key
+• Step 6: SERVICE AUTHENTICATION BEGINS
+  ‣ Client Sends Application Request packet to app server AP_REQ. Includes
+    • username + timestamp encrypted with session key + service ticket
+‣ Step 7: Application Server decrypts service ticket using password hash and extracts username and session key. It uses service key to decrypt 
+  username from the application request packet. If the app request username matches the one decrypted from service ticket, the request is accepted.
+
+
+• CACHED CREDENTIAL STORAGE AND RETRIEVAL
+		Password hashes are stored LSASS memory space -> use mimikatz to extract the hashes.
+                Since LSASS runs as SYSTEM, we need at least a local admin or System level privilege
+                mimikatz # privilege::debug
+                mimikatz # sekurlsa::logonpasswords
+                We can obtain clear-text password from the hashes
+            
+		STEAL TGT and TGS                
+                # Exploit kerberos authentication by abusing TGT and Service tickets
+                # Tickets are also stored in LSASS. To get the TGT and TGS tickets
+                mimikatz# sekurlsa::tickets
+
+                With stolen TGS, we can access resources associated with TGS. With stolen TGT we can request TGS for any resources within the domain. 
+
+• SERVICE ACCOUNT ATTACKS
+∘ Service ticket is encrypted using password hash of SPN
+∘ When user wants to access resource hosted by SPN, it sends service ticket request to domain controller
+∘ When user receives the service ticket, it sends it to SPN which then decrypts the service ticket using its password hash
+∘ Flaw
+‣ when requesting service ticket from DC, no checks are performed on whether user has any permissions to access the service hosted by SPN.
+‣ If we know target SPN, we can request service ticket for it from DC. We can extract the ticket from from user's memory.
+ 
+
+• LOW AND SLOW PASSWORD GUESSING
