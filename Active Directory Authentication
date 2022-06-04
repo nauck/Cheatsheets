@@ -1,4 +1,6 @@
+------------------------------------------------------------------
 NTLM AUTHENTICATION - based on the idea of challenge and response
+------------------------------------------------------------------
 ‣ client calculates NTLM hash from users password
 ‣ client sends username to server
 ‣ server sends 'nonce' (challenge) to client
@@ -7,7 +9,9 @@ NTLM AUTHENTICATION - based on the idea of challenge and response
 ‣ Domain Controller validates by encrypting the 'nonce' with NTLM hash and comparing it to the response from the server
 ‣ If the two are equal, DC approves authentication and tells the server
 
+----------------------------------------------------------------
 KERBEROS AUTHENTICATION - based on the idea of ticketing system
+----------------------------------------------------------------
 ‣ Step 1: client sends request to DC (KDC) - Authentication Server Request (AS_REQ) - contains timestamp encrypted using password hash
 ‣ Step 2: DC looks up password hash and decrypts timestamp. If decryption is good and timestamp is not dupe, authentication is successful. 
   DC replies to client with Authentication Server Reply (AS_REP) that contains 
@@ -33,8 +37,9 @@ KERBEROS AUTHENTICATION - based on the idea of ticketing system
 ‣ Step 7: Application Server decrypts service ticket using password hash and extracts username and session key. It uses service key to decrypt 
   username from the application request packet. If the app request username matches the one decrypted from service ticket, the request is accepted.
 
-
+------------------------------------------
 • CACHED CREDENTIAL STORAGE AND RETRIEVAL
+------------------------------------------
 		Password hashes are stored LSASS memory space -> use mimikatz to extract the hashes.
                 Since LSASS runs as SYSTEM, we need at least a local admin or System level privilege
                 mimikatz # privilege::debug
@@ -47,8 +52,9 @@ KERBEROS AUTHENTICATION - based on the idea of ticketing system
                 mimikatz# sekurlsa::tickets
 
                 With stolen TGS, we can access resources associated with TGS. With stolen TGT we can request TGS for any resources within the domain. 
-
+--------------------------
 • SERVICE ACCOUNT ATTACKS
+--------------------------
 ∘ Service ticket is encrypted using password hash of SPN
 ∘ When user wants to access resource hosted by SPN, it sends service ticket request to domain controller
 ∘ When user receives the service ticket, it sends it to SPN which then decrypts the service ticket using its password hash
@@ -78,4 +84,6 @@ KERBEROS AUTHENTICATION - based on the idea of ticketing system
   # apt install kerberoast
   # python /usr/share/kerberoast/tgsrepcrack.py wordlist.txt service_ticket_name
 
+---------------------------------
 • LOW AND SLOW PASSWORD GUESSING
+---------------------------------
