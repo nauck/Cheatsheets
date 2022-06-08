@@ -1,8 +1,8 @@
 --------------
 GOLDEN TICKETS
 --------------
--KDC encrypts TGT with its secret key. This secret key is password hash of a domain user account called krbtgt.
--If we can obtain krbtgt password hash, we can create self-made TGT, also known as golden tickets.
+KDC encrypts TGT with its secret key. This secret key is password hash of a domain user account called krbtgt. If we can obtain 
+krbtgt password hash, we can create a self-made TGT, also known as golden tickets.
 
 Test
 Move laterally from Win10 to DC via PsExec as a regular user.
