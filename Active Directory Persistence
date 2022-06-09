@@ -33,3 +33,14 @@ We used kerberos ticket to get to DC and bypassed NTLM authentication. Hence, it
 ------------------------------
 DOMAIN CONTROL SYNCHRONIZATION
 ------------------------------
+NTDS.dit  -  database file used to store password hash of every user similar to SAM db used for local accounts
+Difficult to steal NTDS.dir since it requires tool to be uploaded to DC and might leave trail.
+
+In enterprise there are more than 1 dc to provide redundancy 
+The directory replication service Remote Protocol uses replication to sync these redundant DC.
+A DC may request an update for specific object like account with IDL_DRSGenNCChanges API
+
+DC receiving a request for an update does not verify that request came from known DC, only checks that SID has appropriate privileges.
+If we issue request to DC from user who is member of Domains Admins group, it will succeed.
+
+mimikatz # lsadump::dcsync /user:Administrator
