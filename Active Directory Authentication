@@ -38,20 +38,22 @@ Step 5: Ticket granting service on KDC receives TGS_REQ and if SPN exists
   username from the application request packet. If the app request username matches the one decrypted from service ticket, the request is accepted.
 
 ------------------------------------------
-• CACHED CREDENTIAL STORAGE AND RETRIEVAL
+CACHED CREDENTIAL STORAGE AND RETRIEVAL
 ------------------------------------------
-		Password hashes are stored LSASS memory space -> use mimikatz to extract the hashes.
-                Since LSASS runs as SYSTEM, we need at least a local admin or System level privilege
-                mimikatz # privilege::debug
-                mimikatz # sekurlsa::logonpasswords
-                We can obtain clear-text password from the hashes
-            
-		STEAL TGT and TGS                
-                # Exploit kerberos authentication by abusing TGT and Service tickets
-                # Tickets are also stored in LSASS. To get the TGT and TGS tickets
-                mimikatz# sekurlsa::tickets
+Password hashes are stored LSASS memory space -> use mimikatz to extract the hashes.
+Since LSASS runs as SYSTEM, we need at least a local admin or System level privilege
 
-                With stolen TGS, we can access resources associated with TGS. With stolen TGT we can request TGS for any resources within the domain. 
+mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords
+                
+We can obtain clear-text password from the hashes
+            
+STEAL TGT and TGS                
+// Exploit kerberos authentication by abusing TGT and Service tickets
+// Tickets are also stored in LSASS. To get the TGT and TGS tickets
+mimikatz# sekurlsa::tickets
+
+With stolen TGS, we can access resources associated with TGS. With stolen TGT we can request TGS for any resources within the domain. 
 --------------------------
 • SERVICE ACCOUNT ATTACKS
 --------------------------
