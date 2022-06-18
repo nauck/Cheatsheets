@@ -1,0 +1,6 @@
+// some examples of using wfuzz to send API requests
+$ wfuzz -X GET -z file,file.txt http://endpoint/FUZZ
+$ wfull -X POST -z range,1-50 http://endpoint/account?userid=FUZZ
+
+// for multiple parameters use FUZ1 FUZ2 etc
+$ wfuzz -z list,A-B-C -z range,1-3 http://endpoint/FUZ1/account?userid=FUZ2
