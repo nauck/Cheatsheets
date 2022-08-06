@@ -1,0 +1,10 @@
+// get ip address of wired network using command line
+# nmcli -t device # note the interface
+# nmcli con up $interface
+
+// get ip address of wireless network using command line
+# nmcli wifi device list # note the ssid
+# nmcli wifi device connect $ssid --ask
+
+// change the hostname
+# hostnamectl set-hostname hostname.example.com
