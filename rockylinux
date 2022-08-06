@@ -12,3 +12,48 @@
 // installing openvpn
 # dnf install epel-release -y
 # dnf install openvpn
+
+// useful firewll commands
+By default it will block all services, ports and protocols
+Notes:
+    services -> protocols + port
+    example below: if ssh service is allowed then firewall allows ssh over port 22.
+    
+    services with client means outgoing connections
+    example below: dhcpv6-client - allows outgoing connections
+                   cockpit, http, https, ssh - allows inbound connections
+                   
+    to check what ports are allowed for give service
+    # cat /etc/services | grep serivce(say ssh)
+                   
+# firewall-cmd --zone=public --permanent --add-port=9090/tcp #open port 9090 to tcp connections permanently
+# firewall-cmd --zone=public --permanent --remove-port=9090/tcp #removes port 9090 to tcp connections permanently
+# firewall-cmd --zone=public --add-service=http --add-service=https #open default http and https protocols permanently
+# firewall-cmd --reload #reload the firewall daemon after setting rules to take into effect
+# firewall-cmd --list-all # display zone information of all the zones
+# firewall-cmd --check # check if firewalld is running
+Other useful commands
+# firewall-cmd --get-active-zones
+# firewall-cmd --get-default-zone
+# firewall-cmd --list-services
+# firewall-cmd --list-ports --zone=public
+
+[root@exaple]# firewall-cmd --list-all
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens160
+  sources: 
+  services: cockpit dhcpv6-client http https ssh
+  ports: 9090/tcp
+  protocols: 
+  forward: no
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
+
+// disable selinux temporarily
+# setenforce 0
+
