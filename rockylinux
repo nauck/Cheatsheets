@@ -8,3 +8,7 @@
 
 // change the hostname
 # hostnamectl set-hostname hostname.example.com
+
+// installing openvpn
+# dnf install epel-release -y
+# dnf install openvpn
