@@ -3,8 +3,8 @@
 # nmcli con up $interface
 
 // get ip address of wireless network using command line
-# nmcli wifi device list # note the ssid
-# nmcli wifi device connect $ssid --ask
+# nmcli wifi dev list # note the ssid
+# nmcli wifi dev connect $ssid --ask
 
 // change the hostname
 # hostnamectl set-hostname hostname.example.com
@@ -56,4 +56,7 @@ public (active)
 
 // disable selinux temporarily
 # setenforce 0
+
+// turn on ntp
+# timedatectl set-ntp on
 
