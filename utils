@@ -1,0 +1,5 @@
+# show the size of subfolders in current directory
+$ du -h --max-depth=1
+
+# show the size of both subfolders and files
+$ du -h -sh *
