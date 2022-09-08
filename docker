@@ -1,0 +1,4 @@
+// enable on boot, start and stop
+# systemctl --user enable docker-desktop
+# systemctl --user start docker-desktop
+# systemctl --user stop docker-desktop
