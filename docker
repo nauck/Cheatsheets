@@ -57,3 +57,9 @@ docker images -a
 docker image prune
 docker container prune
 $ docker run -d -p 5000:5000 <container>
+
+// set env variables
+$ docker run -d -p 5000:5000-e .env --name rockandroll container
+$ docker logs containerid
+$ docker logs -n containerid
+$ docker logs -f containerid
