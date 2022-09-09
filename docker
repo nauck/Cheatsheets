@@ -1,3 +1,5 @@
+docker --help
+
 // enable on boot, start and stop
 # systemctl --user enable docker-desktop
 # systemctl --user start docker-desktop
@@ -13,6 +15,14 @@ $ docker run -d jpetazzo/clock
 OR
 $ docker run -d --name jesse jpetazzo/clock
 
-# list containers
+// list containers (gives container id)
 $ docker ps
 
+// stopping containers
+// gracefully (10s)
+$ docker stop <containerid>
+//forcefully
+$ docker kill <containerid>
+
+// follow the logs
+$ docker logs -f --tail 3 <containerid>
