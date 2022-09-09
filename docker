@@ -68,7 +68,7 @@ $ docker logs -f containerid
 docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
 
 // bind mounts - lets local file mounts onto container directory
-// docker compose - github awesome-compose
+// docker-compose.yml
 services:
   web:
     build: flask
@@ -80,4 +80,20 @@ services:
       -./flask:/app
     volumes:
       -./flask:/app
+db:
+  image:postgres
+  ports:
+    -'5432:5432'
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: postgres
+  volumes:
+    - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
+
+$ docker compose up
 
