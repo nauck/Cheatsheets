@@ -2,3 +2,17 @@
 # systemctl --user enable docker-desktop
 # systemctl --user start docker-desktop
 # systemctl --user stop docker-desktop
+
+// run container
+$ docker run -i -t fedora
+-t: allocate a pseudo tty
+-i: keep STDIN open even if not attached
+
+// run in detached mode
+$ docker run -d jpetazzo/clock
+OR
+$ docker run -d --name jesse jpetazzo/clock
+
+# list containers
+$ docker ps
+
