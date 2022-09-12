@@ -10,10 +10,10 @@ $ docker run -i -t fedora
 -t: allocate a pseudo tty
 -i: keep STDIN open even if not attached
 
+// list all containers
+$ docker container ls -a
 // run in detached mode
-$ docker run -d jpetazzo/clock
-OR
-$ docker run -d --name jesse jpetazzo/clock
+$ docker run -d container_name
 
 // list containers (gives container id)
 $ docker ps
