@@ -3,3 +3,6 @@ $ du -h --max-depth=1
 
 # show the size of both subfolders and files
 $ du -h -sh *
+
+# check the running services 
+$ sudo systemctl --type=service --state=active
