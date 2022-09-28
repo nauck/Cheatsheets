@@ -29,3 +29,7 @@ $ tmux attach -t Session
     Ctrl+B W — Open a panel to navigate across windows in multiple sessions.
 
 More at: https://www.redhat.com/sysadmin/introduction-tmux-linux
+
+// mount and unmount iso images in windows
+PS:> DiskImage -ImagePath "c:\path_to_iso"
+PS:> Dismount-DiskImage -ImagePath "e:\path_to_iso"
