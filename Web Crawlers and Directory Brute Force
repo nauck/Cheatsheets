@@ -8,3 +8,6 @@ wfuzz -c -z file,/usr/share/wordlists/wfuzz/Injections/SQL.txt -d "username=admi
 -z: payload to use
 -d: data to post to the server obtained from burp
 -u: target url
+
+// Fuzz files and directories
+wfuzz -c -z file,/opt/SecLists/Discovery/web-content/raft-large-files.txt -hc 404 http://example.com
