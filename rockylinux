@@ -2,6 +2,11 @@
 # nmcli -t device # note the interface
 # nmcli con up $interface
 
+// print routing table
+# ip r list
+// sets the network interface to either up (enabled) or down (disabled)
+# ip link set dev [Device Name] [up|down] 
+
 // get ip address of wireless network using command line
 # nmcli wifi dev list # note the ssid
 # nmcli wifi dev connect $ssid --ask
