@@ -1,0 +1,42 @@
+NMAP
+-v: Verbose
+-O: OS Detection
+-F: Fast Scan through commonly used ports
+-sS: TCP Syn Scan - Does not complete 3-way handshake
+-sT: TCP Connect Scan - Completes 3-way handshake
+-sU: UDP Scan
+-sA: TCP ACK Scan - Allows to identify firewalls
+-sV: Version Detection - Detect the service version running on each port
+
+Example: 
+# nmap -v -sV -sT scanme.nmap.org
+
+DIG
+// query for A record
+# dig domain A
+// queiry for mail record
+# dig domain MX
+// query for all DNS record and remove extra information from dig
+# dig domain ANY +nocomments +noauthority +noadditional +nostats
+
+NETSTAT
+// display all current connections and listening ports on the system
+# netstat -a
+// display all current connections and listening ports on the system as well as their executable
+# netstat -a -b
+// Displays the statistics for all connections using TCP and then displays them in an FQDN format
+# netstat -s -p tcp -f
+
+TRACEROUTE
+// basic traceroute - gives the path it takes to reach a destination
+# traceroute url
+// traceroute through specific port
+# traceroute url -p port_number
+
+IP
+// show ip address
+# ip a
+// display routing table
+# ip r list
+// set network interface up or down
+# ip link set dev [Device Name] [up|down]
